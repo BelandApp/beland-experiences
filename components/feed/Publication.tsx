@@ -1,11 +1,12 @@
 "use client";
 import { Heart, MessageSquareShare } from "lucide-react";
-import { formatLikes } from "@/lib/data/publications";
+import { experiencesApi, formatLikes } from "@/lib/data/publications";
 import { cn } from "@/lib/utils";
 import { VideoPlayer } from "./VideoPlayer";
 import { PublicationMeta } from "./PublicationMeta";
 import { useState } from "react";
 import { Publication as PublicationType } from "@/lib/data/types";
+import Image from "next/image";
 
 type PublicationProps = {
   publication: PublicationType;
@@ -21,7 +22,7 @@ export function Publication({
   const [like, setLike] = useState(false);
   const handleLike = async () => {
     setLike(!like);
-    // await postLike(publication.id);
+    await experiencesApi.like(publication.id, "token");
   };
   const text = "Quiero que veas este producto de Beland";
   const handleShare = async () => {
@@ -58,7 +59,15 @@ export function Publication({
         className,
       )}
     >
-      <VideoPlayer src={publication.video_url} isActive={isActive} />
+      {publication.video_url && publication.video_url !== "" ? (
+        <VideoPlayer src={publication.video_url} isActive={isActive} />
+      ) : (
+        <Image
+          src={publication.image_url}
+          fill
+          alt={`Imagen del producto ${publication.name}`}
+        />
+      )}
 
       <div
         aria-hidden="true"

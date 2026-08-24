@@ -27,6 +27,7 @@ export async function apiFetch<T = unknown>(
   // 3. Petición nativa con la URL base antepuesta
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...customConfig,
+    credentials: "include",
     headers: {
       ...defaultHeaders,
       ...headers,

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { Publication } from "@/lib/data/publications";
+import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -34,7 +34,7 @@ export function PublicationMeta({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {publication.tags.map((tag) => (
+        {publication.tags.map((tag: string) => (
           <Badge key={tag}>{tag}</Badge>
         ))}
       </div>
