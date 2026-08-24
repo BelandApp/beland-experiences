@@ -33,7 +33,7 @@ export const Feed: React.FC<FeedProps> = ({ initialActiveId }) => {
       <main className="flex flex-col h-dvh bg-black p-12">
         <header className="hidden md:flex items-center justify-between px-5">
           <Logo />
-          <Button target="_blank" href="https:beland.app/Login">
+          <Button target="_blank" href="https://beland.app/Login">
             Conoce nuestra App <ArrowUpRight />
           </Button>
         </header>
@@ -42,7 +42,7 @@ export const Feed: React.FC<FeedProps> = ({ initialActiveId }) => {
             Lamentablemente no encontramos productos de experiencia, pero puedes
             ver las novedades en nuestra app:
           </span>
-          <Button target="_blank" href="https:beland.app/Login">
+          <Button target="_blank" href="https://beland.app/Login">
             Conoce nuestra App <ArrowUpRight />
           </Button>
         </div>
@@ -52,7 +52,7 @@ export const Feed: React.FC<FeedProps> = ({ initialActiveId }) => {
     <main className="relative flex h-dvh flex-col overflow-hidden">
       <header className="hidden md:flex items-center justify-between px-5">
         <Logo />
-        <Button target="_blank" href="https:beland.app/Login">
+        <Button target="_blank" href="https://beland.app/Login">
           Conoce nuestra App <ArrowUpRight />
         </Button>
       </header>

@@ -79,7 +79,7 @@ export default async function CashConfirmationPage(
           <Link
             target="_blank"
             referrerPolicy="no-referrer"
-            href="https:beland.app/Login"
+            href="https://beland.app/Login"
             className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-primary-hover focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98]"
           >
             <Gift className="h-4.5 w-4.5" aria-hidden="true" />
