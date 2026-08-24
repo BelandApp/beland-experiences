@@ -1,6 +1,6 @@
 "use client";
-
-import { Heart } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Heart, MessageSquareShare } from "lucide-react";
 import type { Publication } from "@/lib/data/publications";
 import { formatLikes, postLike } from "@/lib/data/publications";
 import { cn } from "@/lib/utils";
@@ -19,10 +19,38 @@ export function Publication({
   isActive,
   className,
 }: PublicationProps) {
+  const pathname = usePathname();
   const [like, setLike] = useState(false);
   const handleLike = async () => {
     setLike(!like);
     await postLike(publication.id);
+  };
+  const text = "Quiero que veas este producto de Beland";
+  const handleShare = async () => {
+    const currentUrl = `${window.location.origin}${pathname}`;
+    // 1. Verificamos si el navegador soporta Web Share API
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: publication.name,
+          text: text,
+          url: currentUrl,
+        });
+      } catch (error) {
+        // Ignoramos el error si el usuario simplemente canceló el menú de compartir
+        if ((error as Error).name !== "AbortError") {
+          console.error("Error al compartir:", error);
+        }
+      }
+    } else {
+      // 2. Fallback opcional si el navegador no soporta la API (ej. copiar al portapapeles)
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        alert("Enlace copiado al portapapeles");
+      } catch (err) {
+        console.error("Error al copiar el enlace:", err);
+      }
+    }
   };
   return (
     <article
@@ -52,6 +80,14 @@ export function Publication({
             isActive && "animate-meta-in",
           )}
         >
+          <button
+            type="button"
+            onClick={handleShare}
+            aria-label={`${formatLikes(publication.likes)} me gusta`}
+            className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-200 ease-out outline-none hover:bg-white/20 focus-visible:ring-4 focus-visible:ring-white/40 active:scale-95"
+          >
+            <MessageSquareShare />
+          </button>
           <button
             type="button"
             onClick={handleLike}
