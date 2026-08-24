@@ -4,6 +4,7 @@ import { Publication } from "./Publication";
 import { Button } from "../ui/Button";
 import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react";
 import { useFeed } from "./hooks/useFeed";
+import { Spinner } from "../ui/Spinner";
 interface FeedProps {
   initialActiveId?: string;
 }
@@ -15,9 +16,40 @@ export const Feed: React.FC<FeedProps> = ({ initialActiveId }) => {
     containerRef,
     scrollToPublication,
     active,
+    loading,
   } = useFeed(initialActiveId);
+
+  if (loading)
+    return (
+      <main className="flex flex-col gap-2 h-dvh bg-black items-center justify-center p-12">
+        <Logo animated />
+        <span className="text-white">Cargando productos únicos para ti</span>
+        <Spinner />
+      </main>
+    );
+
+  if (publications.length === 0)
+    return (
+      <main className="flex flex-col h-dvh bg-black p-12">
+        <header className="hidden md:flex items-center justify-between px-5">
+          <Logo />
+          <Button target="_blank" href="https:beland.app/Login">
+            Conoce nuestra App <ArrowUpRight />
+          </Button>
+        </header>
+        <div className="flex flex-col gap-2 m-auto items-center justify-center">
+          <span className="text-white text-center">
+            Lamentablemente no encontramos productos de experiencia, pero puedes
+            ver las novedades en nuestra app:
+          </span>
+          <Button target="_blank" href="https:beland.app/Login">
+            Conoce nuestra App <ArrowUpRight />
+          </Button>
+        </div>
+      </main>
+    );
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden">
+    <main className="relative flex h-dvh flex-col overflow-hidden">
       <header className="hidden md:flex items-center justify-between px-5">
         <Logo />
         <Button target="_blank" href="https:beland.app/Login">
@@ -49,6 +81,6 @@ export const Feed: React.FC<FeedProps> = ({ initialActiveId }) => {
           <ArrowDown />
         </Button>
       </div>
-    </div>
+    </main>
   );
 };

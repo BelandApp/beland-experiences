@@ -1,16 +1,5 @@
-const api = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-export type Publication = {
-  id: string;
-  name: string;
-  video_url: string;
-  image_url: string;
-  likes: number;
-  tags: string[];
-  price: number;
-  creator: string; //default Beland
-  description: string;
-};
+import { apiFetch } from "@/lib/core";
+import { Publication } from "./types";
 
 const SAMPLE_VIDEOS = [
   "https://videos.pexels.com/video-files/8628285/8628285-hd_1080_1920_25fps.mp4",
@@ -59,20 +48,20 @@ const CATALOG: Publication[] = [
   },
 ];
 
-export function getPublications(): Publication[] {
-  return CATALOG;
-}
+// export function getPublications(): Publication[] {
+//   return CATALOG;
+// }
 
-export function getPublicationById(
-  id: string | undefined,
-): Publication | undefined {
-  if (!id) return undefined;
-  return CATALOG.find((publication) => publication.id === id);
-}
+// export function getPublicationById(
+//   id: string | undefined,
+// ): Publication | undefined {
+//   if (!id) return undefined;
+//   return CATALOG.find((publication) => publication.id === id);
+// }
 
-export async function postLike(id: string) {
-  return await fetch(`${api}/experience-products-like/${id}`);
-}
+// export async function postLike(id: string) {
+//   return await fetch(`${api}/experience-products-like/${id}`);
+// }
 
 export function formatPrice(amount: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -88,3 +77,25 @@ export function formatLikes(count: number): string {
     maximumFractionDigits: 1,
   }).format(count);
 }
+
+export const experiencesApi = {
+  // GET /api/experiences (Sin token)
+  getAll: () => apiFetch<Publication[]>("/api/experiences"),
+
+  // GET /api/experiences/:id (Sin token)
+  getById: (id: string) => apiFetch<Publication>(`/api/experiences/${id}`),
+
+  // POST /api/experiences/:id/like (Con token)
+  like: (id: string, token: string) =>
+    apiFetch<{ likesCount: number }>(`/api/experiences/${id}/like`, {
+      method: "POST",
+      token,
+    }),
+
+  // DELETE /api/experiences/:id/like (Con token)
+  unlike: (id: string, token: string) =>
+    apiFetch<{ likesCount: number }>(`/api/experiences/${id}/like`, {
+      method: "DELETE",
+      token,
+    }),
+};

@@ -1,5 +1,5 @@
-import { getPublications } from "@/lib/data/publications";
 import { Feed } from "@/components/feed/Feed";
+import { experiencesApi } from "@/lib/data/publications";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -10,7 +10,7 @@ interface Props {
 // 1. Método Server-Side para generar la metadata dinámica según el ID
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const publications = getPublications();
+  const publications = await experiencesApi.getAll();
   const publication = publications.find((p) => p.id === id);
 
   if (!publication) {
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // 2. Componente de la página
 export default async function PublicationPage({ params }: Props) {
   const { id } = await params;
-  const publications = getPublications();
+  const publications = await experiencesApi.getAll();
   const exists = publications.some((p) => p.id === id);
 
   if (!exists) {

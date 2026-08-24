@@ -1,8 +1,9 @@
-import { getPublications } from "@/lib/data/publications";
 import { useEffect, useRef, useState } from "react";
+import { usePublications } from "./usePublications";
 
 export const useFeed = (initialActiveId?: string) => {
-  const publications = getPublications();
+  const { loading, publications } = usePublications();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState<string | undefined>(
     initialActiveId || publications[0]?.id,
@@ -92,6 +93,7 @@ export const useFeed = (initialActiveId?: string) => {
     publications[0];
 
   return {
+    loading,
     publications,
     containerRef,
     scrollToPublication,

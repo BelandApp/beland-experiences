@@ -1,14 +1,14 @@
 "use client";
 import { Heart, MessageSquareShare } from "lucide-react";
-import type { Publication } from "@/lib/data/publications";
-import { formatLikes, postLike } from "@/lib/data/publications";
+import { formatLikes } from "@/lib/data/publications";
 import { cn } from "@/lib/utils";
 import { VideoPlayer } from "./VideoPlayer";
 import { PublicationMeta } from "./PublicationMeta";
 import { useState } from "react";
+import { Publication as PublicationType } from "@/lib/data/types";
 
 type PublicationProps = {
-  publication: Publication;
+  publication: PublicationType;
   isActive: boolean;
   className?: string;
 };
@@ -21,7 +21,7 @@ export function Publication({
   const [like, setLike] = useState(false);
   const handleLike = async () => {
     setLike(!like);
-    await postLike(publication.id);
+    // await postLike(publication.id);
   };
   const text = "Quiero que veas este producto de Beland";
   const handleShare = async () => {
