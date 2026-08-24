@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
-import type { Publication } from "@/lib/data/publications";
+import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { Logo } from "@/components/ui/Logo";
 
@@ -15,8 +15,6 @@ export function SuccessState({
   reference,
   transactionId,
 }: SuccessStateProps) {
-  // TODO: avisar al backend que se hizo correctamente el pago
-  // await paymentConfirm(transactionId, amount);
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-center border-b border-border">

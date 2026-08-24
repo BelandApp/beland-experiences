@@ -15,7 +15,14 @@ export type PaymentProcess = {
   signal: AbortSignal;
 };
 export type PaymentResult =
-  | { status: "success"; reference: string; transactionId: string }
+  | {
+      status: "success";
+      reference: string;
+      transactionId: string;
+      total_amount: number;
+      phone: string;
+      email: string;
+    }
   | { status: "failed"; reference: string; message: string };
 
 /**
@@ -39,12 +46,14 @@ export interface PayphoneConfirmResponse {
   transactionStatus: "Approved" | "Rejected" | "Cancelled";
   transactionId: number;
   amount: number;
+  email: string;
   reference: string;
-  phoneNumber?: string;
-  document?: string;
+  phoneNumber: string;
+  optionalParameter4?: string;
+  document: string;
   cardHolder?: string;
   cardBrand?: string;
-  cardType?: string;
+  cardType: string;
   lastDigits?: string;
   cardToken?: string;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Gift, Home } from "lucide-react";
-import { getPublicationById, formatPrice } from "@/lib/data/publications";
+import { experiencesApi, formatPrice } from "@/lib/data/publications";
 import { Logo } from "@/components/ui/Logo";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function CashConfirmationPage(
     ? searchParams.ref[0]
     : searchParams.ref;
 
-  const publication = getPublicationById(productId);
+  const publication = await experiencesApi.getById(productId!);
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">

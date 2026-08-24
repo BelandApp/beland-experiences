@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Banknote } from "lucide-react";
-import type { Publication } from "@/lib/data/publications";
+import type { Publication } from "@/lib/data/types";
 import { submitCashOrder } from "@/lib/orders/cash-order";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { getPublicationById } from "@/lib/data/publications";
 import { Checkout } from "@/components/checkout/Checkout";
 import { CheckoutEmpty } from "@/components/checkout/CheckoutEmpty";
+import { experiencesApi } from "@/lib/data/publications";
 
 export const metadata: Metadata = {
   title: "Finalizar compra — Maroon",
@@ -13,7 +13,7 @@ export default async function CheckoutPage(props: PageProps<"/checkout">) {
     ? searchParams.product[0]
     : searchParams.product;
 
-  const publication = getPublicationById(productId);
+  const publication = await experiencesApi.getById(productId!);
   if (!publication) {
     return <CheckoutEmpty />;
   }

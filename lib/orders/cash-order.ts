@@ -1,4 +1,5 @@
-const api = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { apiFetch } from "../core";
+
 export type CashOrderInput = {
   productId: string;
   name: string;
@@ -28,19 +29,16 @@ export async function submitCashOrder(
     reference: `EFV-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
   };
 }
-// TODO: REAL IMPLEMENTATION necesitamos del backend un endpoint que permita sin usuario crear una intencion de pago, solamente para guardar que efectivamente se compró. se manda el id de la transaccion y el monto.  luego se consulta para procesarlo, si esta todo correcto se indica que ya fue procesado, creando la idempotencia. chequear si el transaction id TX-time.now es el devuelto por payphone y usar ese mismo.
-export type PaymentIntentResult = {
-  ok: boolean;
-  error?: string;
+
+export type order = {
+  payphone_transaction_id: string;
+  email: string;
+  total_amount: number;
+  items: { product_id: string; quantity: number }[];
 };
-export async function paymentIntent(
-  transactionId: string,
-  amount: number,
-): Promise<PaymentIntentResult> {
-  const data = { transactionId, amount };
-  const response = await fetch(`${api}/payment-intent`, {
+export async function submitOrder(data: order) {
+  return apiFetch("/experiences/purchases", {
     method: "POST",
     body: JSON.stringify(data),
   });
-  return response.json();
 }

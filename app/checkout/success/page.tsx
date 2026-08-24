@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getPublicationById } from "@/lib/data/publications";
 import { SuccessState } from "@/components/feedback/SuccessState";
+import { experiencesApi } from "@/lib/data/publications";
 
 export const metadata: Metadata = {
   title: "Compra realizada — Beland",
@@ -20,7 +20,7 @@ export default async function CheckoutSuccessPage(
     ? searchParams.tx[0]
     : searchParams.tx;
 
-  const publication = getPublicationById(productId);
+  const publication = await experiencesApi.getById(productId!);
 
   return (
     <SuccessState

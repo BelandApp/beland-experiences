@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getPublicationById } from "@/lib/data/publications";
 import { ErrorState } from "@/components/feedback/ErrorState";
+import { experiencesApi } from "@/lib/data/publications";
 
 export const metadata: Metadata = {
   title: "Pago no completado — Beland",
@@ -17,7 +17,7 @@ export default async function CheckoutErrorPage(
     ? searchParams.ref[0]
     : searchParams.ref;
 
-  const publication = getPublicationById(productId);
+  const publication = experiencesApi.getById(productId!);
 
   return <ErrorState publication={publication} reference={reference} />;
 }

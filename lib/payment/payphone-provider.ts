@@ -111,6 +111,9 @@ export class PayphoneProvider implements PaymentProvider {
       status: "success",
       reference: response.reference,
       transactionId: String(response.transactionId),
+      total_amount: response.amount,
+      phone: response.phoneNumber ?? "sin numero",
+      email: response.email ?? "sin mail",
     };
   }
 }

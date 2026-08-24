@@ -4,6 +4,7 @@ import { Logo } from "../ui/Logo";
 import { Spinner } from "../ui/Spinner";
 import { useRouter } from "next/navigation";
 import { getPaymentProvider } from "@/lib/payment/provider";
+import { submitOrder } from "@/lib/orders/cash-order";
 
 type CheckStateProps = {
   id?: string;
@@ -35,6 +36,17 @@ export function CheckState({ id, clientTransactionId }: CheckStateProps) {
       });
       if (controller.signal.aborted) return;
       if (result.status === "success") {
+        submitOrder({
+          payphone_transaction_id: result.transactionId,
+          total_amount: result.total_amount,
+          email: result.email,
+          items: [
+            {
+              product_id: productId ?? result.reference.split(":")[1]?.trim(),
+              quantity: 1,
+            },
+          ],
+        });
         router.replace(
           `/checkout/success?product=${productId ?? ""}&ref=${encodeURIComponent(
             result.reference,

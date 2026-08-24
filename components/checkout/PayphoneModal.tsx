@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { Publication } from "@/lib/data/publications";
+import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { getPaymentProvider } from "@/lib/payment/provider";
 import type { PaymentOrder } from "@/lib/payment/types";
 import { generateReference } from "@/lib/utils";
 import { Dialog } from "@/components/ui/Dialog";
-import { paymentIntent } from "@/lib/orders/cash-order";
 
 type PayphoneModalProps = {
   publication: Publication;
@@ -46,12 +45,8 @@ export function PayphoneModal({
     if (!open) return;
     const createOrder = async () => {
       // creamos orden para payphone
-      const orderCreated = await getPaymentProvider().initializePayment(order);
+      await getPaymentProvider().initializePayment(order);
       localStorage.setItem("productId", order.productId);
-      if (orderCreated.ok) {
-        // si es correcta creamos intencion de pago en el backend
-        // await paymentIntent(orderCreated.transactionId, orderCreated.amount);
-      }
     };
 
     createOrder();
