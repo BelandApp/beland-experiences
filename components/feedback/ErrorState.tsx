@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { RotateCcw, XCircle } from "lucide-react";
-import type { Publication } from "@/lib/data/publications";
+import type { Publication } from "@/lib/data/types";
 import { Logo } from "@/components/ui/Logo";
 
 type ErrorStateProps = {

@@ -1,4 +1,4 @@
-import type { Publication } from "@/lib/data/publications";
+import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";

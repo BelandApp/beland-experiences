@@ -17,7 +17,7 @@ export default async function CheckoutErrorPage(
     ? searchParams.ref[0]
     : searchParams.ref;
 
-  const publication = experiencesApi.getById(productId!);
+  const publication = await experiencesApi.getById(productId!);
 
   return <ErrorState publication={publication} reference={reference} />;
 }
