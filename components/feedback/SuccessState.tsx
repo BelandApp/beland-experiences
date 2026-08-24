@@ -1,8 +1,13 @@
-import Link from "next/link";
+"use client";
 import { Check } from "lucide-react";
 import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { Logo } from "@/components/ui/Logo";
+import { claimReward } from "@/lib/reward/reward";
+import { useState } from "react";
+import { Button } from "../ui/Button";
+import { useRouter } from "next/router";
+import { Input } from "../ui/Input";
 
 type SuccessStateProps = {
   publication?: Publication;
@@ -15,6 +20,20 @@ export function SuccessState({
   reference,
   transactionId,
 }: SuccessStateProps) {
+  const [email, setEmail] = useState<string | null>(
+    localStorage.getItem("email-order"),
+  );
+  const router = useRouter();
+  const handleClaim = async () => {
+    if (!email) return;
+    try {
+      await claimReward({ email: email, code: "WELCOME" });
+      localStorage.removeItem("email-order");
+      router.push("https://beland.app/Login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-center border-b border-border">
@@ -64,16 +83,26 @@ export function SuccessState({
           ) : null}
         </div>
         <span>
-          Ademas ganaste {publication ? publication.price * 0.2 : null} Becoins!
+          Ademas ganaste {publication ? publication.price * 0.5 : null} Becoins!
         </span>
-        <Link
-          target="_blank"
-          referrerPolicy="no-referrer"
-          href="https://beland.app/Login"
+        {!email && (
+          <Input
+            label="email"
+            className=""
+            value={email ?? ""}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        )}
+        <span>
+          Regístrate con este mismo correo {email} para recibirla en tu
+          billetera.
+        </span>
+        <Button
+          onClick={handleClaim}
           className="inline-flex h-14 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-primary-hover focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98]"
         >
           Reclamar
-        </Link>
+        </Button>
       </main>
     </div>
   );

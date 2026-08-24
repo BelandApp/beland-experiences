@@ -36,6 +36,7 @@ export function CheckState({ id, clientTransactionId }: CheckStateProps) {
       });
       if (controller.signal.aborted) return;
       if (result.status === "success") {
+        localStorage.setItem("email-order", result.email);
         submitOrder({
           payphone_transaction_id: result.transactionId,
           total_amount: result.total_amount,

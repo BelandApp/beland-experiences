@@ -37,7 +37,7 @@ export type order = {
   items: { product_id: string; quantity: number }[];
 };
 export async function submitOrder(data: order) {
-  return apiFetch("/experiences/purchases", {
+  return apiFetch("/api/experiences/purchases", {
     method: "POST",
     body: JSON.stringify(data),
   });
