@@ -1,5 +1,4 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { Heart, MessageSquareShare } from "lucide-react";
 import type { Publication } from "@/lib/data/publications";
 import { formatLikes, postLike } from "@/lib/data/publications";
@@ -19,7 +18,6 @@ export function Publication({
   isActive,
   className,
 }: PublicationProps) {
-  const pathname = usePathname();
   const [like, setLike] = useState(false);
   const handleLike = async () => {
     setLike(!like);
@@ -27,14 +25,14 @@ export function Publication({
   };
   const text = "Quiero que veas este producto de Beland";
   const handleShare = async () => {
-    const currentUrl = `${window.location.origin}${pathname}`;
+    const shareUrl = `${window.location.origin}/publication/${publication.id}`;
     // 1. Verificamos si el navegador soporta Web Share API
     if (navigator.share) {
       try {
         await navigator.share({
           title: publication.name,
           text: text,
-          url: currentUrl,
+          url: shareUrl,
         });
       } catch (error) {
         // Ignoramos el error si el usuario simplemente canceló el menú de compartir
@@ -45,7 +43,7 @@ export function Publication({
     } else {
       // 2. Fallback opcional si el navegador no soporta la API (ej. copiar al portapapeles)
       try {
-        await navigator.clipboard.writeText(currentUrl);
+        await navigator.clipboard.writeText(shareUrl);
         alert("Enlace copiado al portapapeles");
       } catch (err) {
         console.error("Error al copiar el enlace:", err);

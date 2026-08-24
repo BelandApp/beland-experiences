@@ -3,9 +3,11 @@ import { Logo } from "@/components/ui/Logo";
 import { Publication } from "./Publication";
 import { Button } from "../ui/Button";
 import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react";
-import { Dialog } from "../ui/Dialog";
 import { useFeed } from "./hooks/useFeed";
-export function Feed() {
+interface FeedProps {
+  initialActiveId?: string;
+}
+export const Feed: React.FC<FeedProps> = ({ initialActiveId }) => {
   const {
     publications,
     isFirst,
@@ -13,7 +15,7 @@ export function Feed() {
     containerRef,
     scrollToPublication,
     active,
-  } = useFeed();
+  } = useFeed(initialActiveId);
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden">
       <header className="hidden md:flex items-center justify-between px-5">
@@ -49,4 +51,4 @@ export function Feed() {
       </div>
     </div>
   );
-}
+};
