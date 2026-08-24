@@ -5,9 +5,10 @@ import Image from "next/image";
 type LogoProps = {
   row?: boolean;
   className?: string;
+  animated?: boolean;
 };
 
-export function Logo({ className, row }: LogoProps) {
+export function Logo({ className, row, animated }: LogoProps) {
   return (
     <Link
       href="/"
@@ -23,6 +24,7 @@ export function Logo({ className, row }: LogoProps) {
         alt="Logo de Beland"
         width={100}
         height={100}
+        className={cn(animated && "animate-logo-bounce")}
       />
       <span className="text-[13px] font-black uppercase text-orange-500">
         Beland
