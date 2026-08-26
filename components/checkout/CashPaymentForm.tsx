@@ -11,6 +11,7 @@ import { Spinner } from "@/components/ui/Spinner";
 
 type CashPaymentFormProps = {
   publication: Publication;
+  quantity: number;
 };
 
 type FormState = {
@@ -48,7 +49,10 @@ function validate(values: FormState): FormErrors {
   return errors;
 }
 
-export function CashPaymentForm({ publication }: CashPaymentFormProps) {
+export function CashPaymentForm({
+  publication,
+  quantity,
+}: CashPaymentFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<FormState>({
     name: "",
@@ -76,7 +80,7 @@ export function CashPaymentForm({ publication }: CashPaymentFormProps) {
       items: [
         {
           product_id: publication.id,
-          quantity: 1,
+          quantity: quantity,
         },
       ],
       is_reserved: true,

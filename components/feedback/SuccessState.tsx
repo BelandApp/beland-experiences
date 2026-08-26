@@ -3,11 +3,10 @@ import { Check } from "lucide-react";
 import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { Logo } from "@/components/ui/Logo";
-import { claimReward } from "@/lib/reward/reward";
-import { useState } from "react";
 import { Button } from "../ui/Button";
-import { useRouter } from "next/router";
 import { Input } from "../ui/Input";
+import { useState } from "react";
+import Image from "next/image";
 
 type SuccessStateProps = {
   publication?: Publication;
@@ -20,20 +19,22 @@ export function SuccessState({
   reference,
   transactionId,
 }: SuccessStateProps) {
-  const [email, setEmail] = useState<string | null>(
-    localStorage.getItem("email-order"),
-  );
-  const router = useRouter();
+  const [email, setEmail] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+
+    return localStorage.getItem("email-order");
+  });
+
   const handleClaim = async () => {
-    if (!email) return;
     try {
-      await claimReward({ email: email, code: "WELCOME" });
+      if (!email) return;
       localStorage.removeItem("email-order");
-      router.push("https://beland.app/Login");
+      window.location.href = "https://beland.app/Login";
     } catch (error) {
       console.error(error);
     }
   };
+  const COMMUNICATE = `https://wa.me/593995269974?text=Hola,%20realicé%20la%20compra%20de%20un%20${publication?.name ? publication.name : "Producto"}%20con%20este%20código%20de%20compra%20${transactionId}%20donde%20lo%20retiro?`;
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-center border-b border-border">
@@ -98,10 +99,19 @@ export function SuccessState({
           billetera.
         </span>
         <Button
+          disabled={!email}
           onClick={handleClaim}
-          className="inline-flex h-14 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-primary-hover focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98]"
+          className="inline-flex h-14 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-primary-hover focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Reclamar
+        </Button>
+
+        <Button
+          className="inline-flex h-14 items-center justify-center rounded-full bg-green-600! px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-green-700 focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
+          href={COMMUNICATE}
+        >
+          <Image width={30} height={30} alt="" src={"/whatsapp.svg"} />
+          Comunicarme por mi compra
         </Button>
       </main>
     </div>

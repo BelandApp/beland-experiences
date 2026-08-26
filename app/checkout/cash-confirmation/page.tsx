@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Gift, Home } from "lucide-react";
 import { experiencesApi, formatPrice } from "@/lib/data/publications";
 import { Logo } from "@/components/ui/Logo";
+import { Button } from "@/components/ui/Button";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Pedido registrado — Maroon",
@@ -23,7 +25,7 @@ export default async function CashConfirmationPage(
     : searchParams.ref;
 
   const publication = await experiencesApi.getById(productId!);
-
+  const COMMUNICATE = `https://wa.me/593995269974?text=Hola,%20realicé%20la%20reserva%20de%20un%20${publication?.name ? publication.name : "Producto"}%20con%20este%20código%20de%20reserva%20${reference}%20donde%20lo%20abono%20y%20retiro?`;
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-center border-b border-border">
@@ -44,9 +46,16 @@ export default async function CashConfirmationPage(
               {name ? <span className="capitalize">, {name}.</span> : ""}
             </span>
             <p className="text-sm leading-relaxed text-muted">
-              Tu pedido quedó reservado. Nos pondremos en contacto contigo para
-              coordinar el pago en efectivo y la entrega.
+              Tu pedido quedó reservado. Ponte en contacto con nosotros:
             </p>
+            <Button
+              target="_blank"
+              className="inline-flex h-14 items-center justify-center rounded-full bg-green-600! px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-green-700 focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
+              href={COMMUNICATE}
+            >
+              <Image width={30} height={30} alt="" src={"/whatsapp.svg"} />
+              Comunicarme por mi compra
+            </Button>
           </div>
         </div>
 

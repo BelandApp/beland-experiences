@@ -19,8 +19,19 @@ type CheckoutProps = {
 
 export function Checkout({ publication }: CheckoutProps) {
   const [method, setMethod] = useState<PaymentMethod>("payphone");
+  const [totalAmount, setTotalAmount] = useState(publication.price);
+  const [quantity, setQuantity] = useState(1);
   const [payphoneOpen, setPayphoneOpen] = useState(false);
-
+  const handleChange = (equation: "+" | "-") => {
+    if (quantity === 0 && equation === "-") return;
+    if (quantity === 5 && equation === "+") return;
+    if (equation === "+") {
+      setQuantity((prev) => prev + 1);
+    } else {
+      setQuantity((prev) => prev - 1);
+    }
+    setTotalAmount(publication.price * quantity);
+  };
   return (
     <div className="min-h-dvh bg-background">
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-md">
@@ -50,7 +61,11 @@ export function Checkout({ publication }: CheckoutProps) {
           </p>
         </div>
 
-        <OrderSummary publication={publication} />
+        <OrderSummary
+          quantity={quantity}
+          publication={publication}
+          onChange={handleChange}
+        />
 
         <PaymentMethodSelector value={method} onChange={setMethod} />
 
@@ -68,11 +83,13 @@ export function Checkout({ publication }: CheckoutProps) {
             </p>
           </div>
         ) : (
-          <CashPaymentForm publication={publication} />
+          <CashPaymentForm quantity={quantity} publication={publication} />
         )}
       </main>
 
       <PayphoneModal
+        quantity={quantity}
+        totalAmount={totalAmount}
         publication={publication}
         open={payphoneOpen}
         onClose={() => setPayphoneOpen(false)}

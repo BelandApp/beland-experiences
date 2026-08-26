@@ -2,9 +2,12 @@ import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";
+import { Minus, MinusCircle, Plus, PlusCircle } from "lucide-react";
 
 type OrderSummaryProps = {
   publication: Publication;
+  quantity: number;
+  onChange: (equation: "+" | "-") => void;
   reference?: string;
   compact?: boolean;
 };
@@ -12,6 +15,8 @@ type OrderSummaryProps = {
 export function OrderSummary({
   publication,
   reference,
+  quantity,
+  onChange,
   compact = false,
 }: OrderSummaryProps) {
   return (
@@ -58,22 +63,35 @@ export function OrderSummary({
         <p className="text-sm leading-relaxed text-muted">
           {publication.description}
         </p>
-
+        <div className="flex flex-row gap-2">
+          <button
+            disabled={quantity <= 1}
+            className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => onChange("-")}
+          >
+            <MinusCircle color="orange" />
+          </button>
+          <span className="font-semibold">{quantity}</span>
+          <button
+            disabled={quantity >= 5}
+            className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => onChange("+")}
+          >
+            <PlusCircle color="orange" />
+          </button>
+        </div>
         <div className="flex flex-wrap gap-2">
           {publication.tags.map((tag) => (
-            <Badge
-              key={tag}
-              className="border-border-strong bg-surface text-muted backdrop-blur-none"
-            >
+            <Badge variant="secondary" key={tag}>
               {tag}
             </Badge>
           ))}
         </div>
 
         <div className="mt-1 flex items-center justify-between border-t border-border pt-4 text-sm">
-          <span className="text-muted">Subtotal · 1 unidad</span>
+          <span className="text-muted">Subtotal · {quantity} unidad</span>
           <span className="font-semibold text-foreground">
-            {formatPrice(publication.price)}
+            {formatPrice(publication.price * quantity)}
           </span>
         </div>
         {reference ? (

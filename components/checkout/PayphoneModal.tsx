@@ -10,6 +10,8 @@ import { Dialog } from "@/components/ui/Dialog";
 
 type PayphoneModalProps = {
   publication: Publication;
+  quantity: number;
+  totalAmount: number;
   open: boolean;
   onClose: () => void;
 };
@@ -19,6 +21,7 @@ type Status = "idle" | "processing";
 export function PayphoneModal({
   publication,
   open,
+  quantity,
   onClose,
 }: PayphoneModalProps) {
   const [status, setStatus] = useState<Status>("idle");
@@ -35,10 +38,10 @@ export function PayphoneModal({
     () => ({
       reference: generateReference("PYF"),
       productId: publication.id,
-      amount: publication.price,
+      amount: publication.price * quantity,
       currency: "USD",
     }),
-    [publication.id, publication.price],
+    [publication.id, publication.price, quantity],
   );
 
   useEffect(() => {
@@ -73,10 +76,12 @@ export function PayphoneModal({
         <div className="flex flex-col gap-0.5">
           <span className="text-[13px] text-muted">{publication.name}</span>
           <span className="text-sm font-semibold text-foreground">
-            {formatPrice(publication.price)}
+            {formatPrice(publication.price * quantity)}
           </span>
         </div>
-        <span className="text-xs text-muted-foreground">1 unidad</span>
+        <span className="text-xs text-muted-foreground">
+          {quantity} unidad{quantity > 1 ? "es" : ""}
+        </span>
       </div>
 
       <div id="pp-button" />

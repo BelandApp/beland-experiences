@@ -2,6 +2,8 @@ import Link from "next/link";
 import { RotateCcw, XCircle } from "lucide-react";
 import type { Publication } from "@/lib/data/types";
 import { Logo } from "@/components/ui/Logo";
+import { Button } from "../ui/Button";
+import Image from "next/image";
 
 type ErrorStateProps = {
   publication?: Publication;
@@ -9,6 +11,7 @@ type ErrorStateProps = {
 };
 
 export function ErrorState({ publication, reference }: ErrorStateProps) {
+  const COMMUNICATE = `https://wa.me/593995269974?text=Hola,%20tengo%20un%20problema,%20quiero%20comprar%20un%20${publication?.name ? publication.name : "producto"}%20pero%20no%20pude,%20me%20ayudas?`;
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-center border-b border-border">
@@ -26,8 +29,16 @@ export function ErrorState({ publication, reference }: ErrorStateProps) {
             </h1>
             <p className="text-sm leading-relaxed text-muted">
               No se realizó ningún cargo a tu cuenta. Puedes intentarlo de nuevo
-              o cambiar de método de pago.
+              o comunicarte
             </p>
+            <Button
+              target="_blank"
+              className="inline-flex h-14 items-center justify-center rounded-full bg-green-600! px-8 text-base font-semibold text-primary-foreground transition-all duration-200 ease-out outline-none hover:bg-green-700 focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
+              href={COMMUNICATE}
+            >
+              <Image width={30} height={30} alt="" src={"/whatsapp.svg"} />
+              Comunicarme por mi compra
+            </Button>
           </div>
         </div>
 
