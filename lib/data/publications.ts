@@ -24,16 +24,8 @@ export const experiencesApi = {
   getById: (id: string) => apiFetch<Publication>(`/api/experiences/${id}`),
 
   // POST /api/experiences/:id/like (Con token)
-  like: (id: string, token: string) =>
-    apiFetch<{ likesCount: number }>(`/api/experiences/${id}/like`, {
+  like: (id: string) =>
+    apiFetch<{ likesCount: number }>(`/api/products/${id}/like`, {
       method: "POST",
-      token,
-    }),
-
-  // DELETE /api/experiences/:id/like (Con token)
-  unlike: (id: string, token: string) =>
-    apiFetch<{ likesCount: number }>(`/api/experiences/${id}/like`, {
-      method: "DELETE",
-      token,
     }),
 };

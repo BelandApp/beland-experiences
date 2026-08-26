@@ -13,16 +13,38 @@ type PublicationProps = {
   isActive: boolean;
   className?: string;
 };
-
+type FloatingHeart = {
+  id: number;
+  left: number;
+  top: number;
+  size: number;
+  rotation: number;
+};
 export function Publication({
   publication,
   isActive,
   className,
 }: PublicationProps) {
   const [like, setLike] = useState(false);
+  const [hearts, setHearts] = useState<FloatingHeart[]>([]);
+  const [totalLikes, setTotalLikes] = useState(publication.likes);
   const handleLike = async () => {
-    setLike(!like);
-    await experiencesApi.like(publication.id, "token");
+    const newHearts = Array.from({ length: 5 }, (_, index) => ({
+      id: Date.now() + index,
+      left: Math.random() * 80 + 10, // 10% - 90%
+      top: Math.random() * 70 + 15, // 15% - 85%
+      size: Math.random() * 20 + 40, // 40px - 60px
+      rotation: Math.random() * 40 - 20, // -20° a 20°
+    }));
+
+    setHearts(newHearts);
+    setLike(true);
+    experiencesApi.like(publication.id);
+    setTotalLikes(publication.likes + 1);
+    setTimeout(() => {
+      setLike(false);
+      setHearts([]);
+    }, 600);
   };
   const text = "Quiero que veas este producto de Beland";
   const handleShare = async () => {
@@ -59,6 +81,26 @@ export function Publication({
         className,
       )}
     >
+      {like && (
+        <div className="pointer-events-none absolute inset-0 z-50">
+          {hearts.map((heart) => (
+            <Heart
+              key={heart.id}
+              aria-hidden="true"
+              className="absolute animate-pop duration-200"
+              style={{
+                left: `${heart.left}%`,
+                top: `${heart.top}%`,
+                width: `${heart.size}px`,
+                height: `${heart.size}px`,
+                transform: `rotate(${heart.rotation}deg)`,
+              }}
+              color="red"
+              fill="red"
+            />
+          ))}
+        </div>
+      )}
       {publication.video_url && publication.video_url !== "" ? (
         <VideoPlayer src={publication.video_url} isActive={isActive} />
       ) : (
@@ -90,7 +132,7 @@ export function Publication({
           <button
             type="button"
             onClick={handleShare}
-            aria-label={`${formatLikes(publication.likes)} me gusta`}
+            aria-label={`compartir publicación`}
             className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-200 ease-out outline-none hover:bg-white/20 focus-visible:ring-4 focus-visible:ring-white/40 active:scale-95"
           >
             <MessageSquareShare />
@@ -98,7 +140,7 @@ export function Publication({
           <button
             type="button"
             onClick={handleLike}
-            aria-label={`${formatLikes(publication.likes)} me gusta`}
+            aria-label={`${formatLikes(totalLikes)} me gusta`}
             className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-200 ease-out outline-none hover:bg-white/20 focus-visible:ring-4 focus-visible:ring-white/40 active:scale-95"
           >
             <Heart
@@ -109,7 +151,7 @@ export function Publication({
             />
           </button>
           <span className="text-xs font-medium text-white">
-            {formatLikes(publication.likes)}
+            {formatLikes(totalLikes)}
           </span>
         </div>
       </div>
