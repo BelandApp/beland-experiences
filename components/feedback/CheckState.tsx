@@ -40,7 +40,10 @@ export function CheckState({ id, clientTransactionId }: CheckStateProps) {
         submitOrder({
           payphone_transaction_id: result.transactionId,
           total_amount: result.total_amount,
-          email: result.email,
+          is_reserved: false,
+          phone: result.phone ?? "no registro teléfono",
+          payment_method: "PAYPHONE",
+          email: result.email ?? "no registro email",
           items: [
             {
               product_id: productId ?? result.reference.split(":")[1]?.trim(),

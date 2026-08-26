@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Banknote } from "lucide-react";
 import type { Publication } from "@/lib/data/types";
-import { submitCashOrder } from "@/lib/orders/cash-order";
+import { submitOrder } from "@/lib/orders/cash-order";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Spinner } from "@/components/ui/Spinner";
@@ -72,20 +72,27 @@ export function CashPaymentForm({ publication }: CashPaymentFormProps) {
     if (Object.keys(nextErrors).length > 0) return;
 
     setSubmitting(true);
-    const result = await submitCashOrder({
-      productId: publication.id,
-      name: values.name.trim(),
+    const result = await submitOrder({
+      items: [
+        {
+          product_id: publication.id,
+          quantity: 1,
+        },
+      ],
+      is_reserved: true,
+      payment_method: "PAYPHONE",
+      total_amount: publication.price,
       phone: values.phone.trim(),
       email: values.email.trim(),
     });
 
-    if (result.ok) {
+    if (result.status === "RESERVADO") {
       router.push(
-        `/checkout/cash-confirmation?product=${publication.id}&name=${encodeURIComponent(values.name.trim())}&ref=${encodeURIComponent(result.reference)}`,
+        `/checkout/cash-confirmation?product=${publication.id}&name=${encodeURIComponent(values.name.trim())}&ref=${encodeURIComponent(result.purchase_id)}`,
       );
     } else {
       setSubmitting(false);
-      setErrors({ name: result.error });
+      alert("Error al reservar el producto");
     }
   };
 
