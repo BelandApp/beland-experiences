@@ -3,7 +3,7 @@
 import { Banknote, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type PaymentMethod = "payphone" | "cash";
+export type PaymentMethod = "payphone" | "cash" | "transfer";
 
 type PaymentMethodSelectorProps = {
   value: PaymentMethod;
@@ -23,6 +23,12 @@ const methods: Array<{
     icon: CreditCard,
   },
   {
+    id: "transfer",
+    title: "Pagar con transferencia Bancaria",
+    description: "Desde tu banco",
+    icon: Banknote,
+  },
+  {
     id: "cash",
     title: "Pagar en efectivo",
     description: "Reserva y paga al recibir",
@@ -30,9 +36,16 @@ const methods: Array<{
   },
 ];
 
-export function PaymentMethodSelector({ value, onChange }: PaymentMethodSelectorProps) {
+export function PaymentMethodSelector({
+  value,
+  onChange,
+}: PaymentMethodSelectorProps) {
   return (
-    <div role="radiogroup" aria-label="Método de pago" className="flex flex-col gap-3">
+    <div
+      role="radiogroup"
+      aria-label="Método de pago"
+      className="flex flex-col gap-3"
+    >
       {methods.map((method) => {
         const Icon = method.icon;
         const selected = value === method.id;
@@ -64,7 +77,9 @@ export function PaymentMethodSelector({ value, onChange }: PaymentMethodSelector
               <span className="text-[15px] font-semibold tracking-wide text-foreground">
                 {method.title}
               </span>
-              <span className="text-[13px] text-muted">{method.description}</span>
+              <span className="text-[13px] text-muted">
+                {method.description}
+              </span>
             </span>
             <span
               aria-hidden="true"

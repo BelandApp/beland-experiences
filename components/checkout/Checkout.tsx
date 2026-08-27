@@ -12,6 +12,7 @@ import {
 } from "./PaymentMethodSelector";
 import { PayphoneModal } from "./PayphoneModal";
 import { CashPaymentForm } from "./CashPaymentForm";
+import { TransferPaymentForm } from "./TransferPaymentForm";
 
 type CheckoutProps = {
   publication: Publication;
@@ -68,8 +69,7 @@ export function Checkout({ publication }: CheckoutProps) {
         />
 
         <PaymentMethodSelector value={method} onChange={setMethod} />
-
-        {method === "payphone" ? (
+        {method === "payphone" && (
           <div className="flex flex-col gap-3">
             <Button
               size="lg"
@@ -82,8 +82,12 @@ export function Checkout({ publication }: CheckoutProps) {
               Serás redirigido a un entorno seguro de Payphone.
             </p>
           </div>
-        ) : (
+        )}
+        {method === "cash" && (
           <CashPaymentForm quantity={quantity} publication={publication} />
+        )}
+        {method === "transfer" && (
+          <TransferPaymentForm quantity={quantity} publication={publication} />
         )}
       </main>
 
