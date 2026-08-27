@@ -19,7 +19,7 @@ type CheckoutProps = {
 };
 
 export function Checkout({ publication }: CheckoutProps) {
-  const [method, setMethod] = useState<PaymentMethod>("payphone");
+  const [method, setMethod] = useState<PaymentMethod>(undefined);
   const [totalAmount, setTotalAmount] = useState(publication.price);
   const [quantity, setQuantity] = useState(1);
   const [payphoneOpen, setPayphoneOpen] = useState(false);
@@ -68,7 +68,18 @@ export function Checkout({ publication }: CheckoutProps) {
           onChange={handleChange}
         />
 
-        <PaymentMethodSelector value={method} onChange={setMethod} />
+        {method === undefined ? (
+          <PaymentMethodSelector value={method} onChange={setMethod} />
+        ) : (
+          <Button
+            className="w-fit"
+            variant="outline"
+            onClick={() => setMethod(undefined)}
+          >
+            <ArrowLeft size={12} />
+            <span className="text-sm">Cambiar método</span>
+          </Button>
+        )}
         {method === "payphone" && (
           <div className="flex flex-col gap-3">
             <Button

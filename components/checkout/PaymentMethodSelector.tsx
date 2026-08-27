@@ -3,7 +3,7 @@
 import { Banknote, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type PaymentMethod = "payphone" | "cash" | "transfer";
+export type PaymentMethod = "payphone" | "cash" | "transfer" | undefined;
 
 type PaymentMethodSelectorProps = {
   value: PaymentMethod;

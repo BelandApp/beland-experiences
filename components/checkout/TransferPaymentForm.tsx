@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Banknote } from "lucide-react";
+import { Banknote, CopyIcon } from "lucide-react";
 import type { Publication } from "@/lib/data/types";
 import { submitOrder } from "@/lib/orders/cash-order";
 import { Button } from "@/components/ui/Button";
@@ -64,6 +64,7 @@ export function TransferPaymentForm({
     check: false,
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [info, setInfo] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const updateField = <K extends keyof FormState>(
@@ -106,7 +107,18 @@ export function TransferPaymentForm({
       alert("Error al comprar el producto");
     }
   };
-
+  const handleCopy = (text: string) => {
+    setInfo(true);
+    navigator.clipboard.writeText(text);
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setInfo(false);
+    }, 700);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [info]);
   return (
     <form
       onSubmit={handleSubmit}
@@ -118,9 +130,42 @@ export function TransferPaymentForm({
         Tus datos de contacto
       </div>
       <p className="-mt-2 text-[13px] leading-relaxed text-muted">
-        Realiza la transferencia y muestra el comprobante al retirar el producto
+        Realiza la transferencia y muestra el comprobante al retirar el
+        producto.
       </p>
+      <div className="p-4 rounded-2xl bg-primary shadow text-white relative">
+        {info && (
+          <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center m-10 rounded-2xl bg-slate-200 animate-fade-in text-black shadow">
+            Copiado
+          </div>
+        )}
+        <div className="flex flex-row justify-between gap-2">
+          <p>Nombre: Beland Ecuador SAS</p>
+          <CopyIcon
+            onClick={() => handleCopy("Beland Ecuador SAS")}
+            size={16}
+            className="hover:text-black hover:scale-120"
+          />
+        </div>
+        <div className="flex flex-row justify-between gap-2">
+          <p>Nro. de cuenta: 58445376</p>
+          <CopyIcon
+            onClick={() => handleCopy("58445376")}
+            size={16}
+            className="hover:text-black hover:scale-120"
+          />
+        </div>
+        <div className="flex flex-row justify-between gap-2">
+          <p>Ruc Nro.: 1793236748001</p>
+          <CopyIcon
+            onClick={() => handleCopy("1793236748001")}
+            size={16}
+            className="hover:text-black hover:scale-120"
+          />
+        </div>
 
+        <p>Tipo de cuenta: Ahorros</p>
+      </div>
       <Input
         label="Nombre completo"
         name="name"
