@@ -98,7 +98,7 @@ export function TransferPaymentForm({
       email: values.email.trim(),
     });
 
-    if (result.status === "RESERVADO") {
+    if (result.status === "ENTREGADO") {
       router.push(
         `/checkout/transfer-confirmation?product=${publication.id}&name=${encodeURIComponent(values.name.trim())}&ref=${encodeURIComponent(result.purchase_id)}`,
       );
@@ -165,6 +165,9 @@ export function TransferPaymentForm({
         </div>
 
         <p>Tipo de cuenta: Ahorros</p>
+        <p className="font-semibold text-center">
+          Monto a transferir: ${(publication.price * quantity).toFixed(2)}
+        </p>
       </div>
       <Input
         label="Nombre completo"

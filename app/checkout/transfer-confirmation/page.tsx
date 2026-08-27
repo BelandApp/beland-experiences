@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: "Pedido registrado — Beland",
 };
 
-export default async function CashConfirmationPage(
-  props: PageProps<"/checkout/cash-confirmation">,
+export default async function TransferConfirmationPage(
+  props: PageProps<"/checkout/transfer-confirmation">,
 ) {
   const searchParams = await props.searchParams;
   const productId = Array.isArray(searchParams.product)
@@ -25,7 +25,7 @@ export default async function CashConfirmationPage(
     : searchParams.ref;
 
   const publication = await experiencesApi.getById(productId!);
-  const COMMUNICATE = `https://wa.me/593995269974?text=Hola,%20realicé%20la%20reserva%20de%20un%20${publication?.name ? publication.name : "Producto"}%20con%20este%20código%20de%20reserva%20${reference}%20donde%20lo%20abono%20y%20retiro?`;
+  const COMMUNICATE = `https://wa.me/593995269974?text=Hola,%20compré%20por%20transferencia%20un%20${publication?.name ? publication.name : "Producto"}%20con%20este%20código%20${reference}%20donde%20lo%20retiro?%20Adjunto%20comprobante%20de%20transferencia:`;
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="flex h-14 shrink-0 items-center justify-center border-b border-border">
@@ -46,7 +46,8 @@ export default async function CashConfirmationPage(
               {name ? <span className="capitalize">, {name}.</span> : ""}
             </span>
             <p className="text-sm leading-relaxed text-muted">
-              Tu pedido quedó reservado. Ponte en contacto con nosotros:
+              Tu pedido quedó reservado. Ponte en contacto con nosotros, no
+              olvides enviarnos la captura o comprobante de transferencia:
             </p>
             <Button
               target="_blank"

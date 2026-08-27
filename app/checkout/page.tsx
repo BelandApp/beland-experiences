@@ -4,7 +4,7 @@ import { CheckoutEmpty } from "@/components/checkout/CheckoutEmpty";
 import { experiencesApi } from "@/lib/data/publications";
 
 export const metadata: Metadata = {
-  title: "Finalizar compra — Maroon",
+  title: "Finalizar compra — Beland",
 };
 
 export default async function CheckoutPage(props: PageProps<"/checkout">) {
