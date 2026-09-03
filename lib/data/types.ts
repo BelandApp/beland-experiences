@@ -8,4 +8,6 @@ export type Publication = {
   price: number;
   creator: string; //default Beland
   description: string;
+  //prop hardcodeada a pedido de diego
+  images_url?: string[];
 };

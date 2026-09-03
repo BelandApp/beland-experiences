@@ -13,7 +13,15 @@ export default async function CheckoutPage(props: PageProps<"/checkout">) {
     ? searchParams.product[0]
     : searchParams.product;
 
-  const publication = await experiencesApi.getById(productId!);
+  const rawPublication = await experiencesApi.getById(productId!);
+  const publication = {
+    ...rawPublication,
+    images_url: [
+      "/gafa-redonda-1.jpeg",
+      "/gafa-redonda-2.jpeg",
+      "/gafa-redonda-3.jpeg",
+    ],
+  };
   if (!publication) {
     return <CheckoutEmpty />;
   }

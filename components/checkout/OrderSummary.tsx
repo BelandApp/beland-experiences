@@ -2,7 +2,8 @@ import type { Publication } from "@/lib/data/types";
 import { formatPrice } from "@/lib/data/publications";
 import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";
-import { Minus, MinusCircle, Plus, PlusCircle } from "lucide-react";
+import { MinusCircle, PlusCircle } from "lucide-react";
+import { ImageCarousel } from "./ImageCarousel";
 
 type OrderSummaryProps = {
   publication: Publication;
@@ -19,29 +20,21 @@ export function OrderSummary({
   onChange,
   compact = false,
 }: OrderSummaryProps) {
+  console.log(publication.images_url);
   return (
     <div
       className={`overflow-hidden rounded-2xl border border-border bg-white shadow-soft ${compact ? "" : ""}`}
     >
-      <div className="relative flex h-50 items-center justify-center overflow-hidden bg-linear-to-br from-primary-soft via-surface to-surface">
-        <span
-          aria-hidden="true"
-          className="font-display text-7xl font-semibold tracking-tight text-primary/25"
-        >
-          {publication.image_url != "" ? (
-            <Image
-              src={publication.image_url}
-              alt={`Foto de ${publication.name}`}
-              fill
-              objectFit="center"
-            />
-          ) : (
-            <span>{publication.name.charAt(0)}</span>
-          )}
-        </span>
+      <div className="relative flex h-60 items-center justify-center overflow-hidden bg-linear-to-br from-primary-soft via-surface to-surface">
+        <ImageCarousel
+          images={publication.images_url!}
+          alt={`Fotos de ${publication.name}`}
+          fallback={publication.name.charAt(0)}
+        />
+
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-white/80 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-linear-to-t from-white/80 to-transparent"
         />
       </div>
 
